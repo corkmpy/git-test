@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+    <title>Plank운동 실행</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .stream {
+            margin: 20px auto;
+            width: 640px;
+            height: 480px;
+            border: 1px solid #ccc;
+            display: none;
+        }
+        .info {
+            text-align: left;
+            margin: 0 auto;
+            width: 640px;
+        }
+        .info p {
+            margin: 5px 0;
+        }
+        .prepare-message {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ exercise|capfirst }}Plank 운동</h1>
+        <div id="prepareMessage" class="prepare-message">준비해주세요... <span id="countdown">10</span></div>
+        <div class="stream" id="videoContainer">
+            <img id="webcam_stream" src="" width="640" height="480">
+        </div>
+        <div class="info">
+            <p>각도 유사도는 실시간으로 표시됩니다.</p>
+            <p>왼쪽 팔꿈치, 오른쪽 팔꿈치, 왼쪽 무릎, 오른쪽 무릎의 유사도를 확인하세요.</p>
+            <p>정확한 자세가 감지되면 카운트가 증가합니다.</p>
+        </div>
+        <button id="stop-stream">Stop Stream</button>
+    </div>
+    <script>
+        // CSRF 토큰을 얻기 위한 함수
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // CSRF 토큰 변수 설정
+        const csrftoken = getCookie('csrftoken');
+
+        // 초기 카운트다운 설정
+        let countdown = 10;
+        const countdownElement = document.getElementById('countdown');
+
+        // 카운트다운 인터벌 설정
+        const countdownInterval = setInterval(() => {
+            countdown--;  // 카운트다운 감소
+            countdownElement.textContent = countdown;  // 카운트다운 텍스트 업데이트
+            if (countdown === 0) {  // 카운트다운이 0이 되면
+                clearInterval(countdownInterval);  // 인터벌 클리어
+                document.getElementById('prepareMessage').style.display = "none";  // 준비 메시지 숨기기
+                document.getElementById('videoContainer').style.display = "block";  // 비디오 컨테이너 표시
+                document.getElementById('webcam_stream').src = "{% url 'video_feed_plank' %}";  // 웹캠 스트림 URL 설정
+
+                // "Stop Stream" 버튼 클릭 이벤트 설정
+                document.getElementById('stop-stream').addEventListener('click', function() {
+                    fetch("{% url 'plank_stop_stream' %}", {
+                        method: 'POST',  // POST 메서드 사용
+                        headers: {
+                            'X-CSRFToken': csrftoken  // CSRF 토큰 포함
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            alert('Stream stopped successfully');
+                            //운동마다 다른 url 필요
+                            window.location.href = "{% url 'plank_result' %}";  // 결과 페이지로 리디렉션
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));  // 에러 처리
+                });
+            }
+        }, 1000);  // 1초 간격으로 실행
+    </script>
+{% endblock %}

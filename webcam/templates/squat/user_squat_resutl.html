@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Squat Exercise Results</h1>
+<p>아이디: {{ user.username }}</p>
+<p>Total Exercise Sessions: {{ total_sessions }}</p>
+<p>Total Counts: {{ total_counts }}</p>
+
+<!-- 테이블 스타일 추가 -->
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    tr:hover {
+        background-color: #ddd;
+    }
+</style>
+
+<table>
+    <thead>
+        <tr>
+            <th>날짜</th>
+            <th>횟수</th>
+            <th>평균 유사도</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for session in exercise_sessions %}
+        <tr>
+            <td>{{ session.timestamp }}</td>
+            <td>{{ session.count_final }}</td>
+            <td>{{ session.average_similarity }}%</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

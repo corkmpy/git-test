@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+    <title>운동 선택</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+            margin: 20px auto;
+        }
+        .controls button {
+            margin: 20px;
+            padding: 20px;
+            font-size: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>운동 선택</h1>
+        <div class="controls">
+            <a href="{% url 'plank'  %}">
+                <button>Plank</button>
+            </a>
+            <a href="{% url 'pushup'  %}">
+                <button>Push-up</button>
+            </a>
+            <a href="{% url 'squat' %}">
+                <button>Squat</button>
+            </a>
+        </div>
+    </div>
+{% endblock %}

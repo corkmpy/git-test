@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - Health Site{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>프로필</h2>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- 유저 정보 표시 -->
+            <p><strong>이름:</strong> {{ user.username }}</p>
+            <p><strong>이메일:</strong> {{ user.email }}</p>
+        </div>
+    </div>
+    <hr>
+    <h3>기존 메모</h3>
+    <!-- 메모 목록 -->
+    <div class="row">
+        {% for memo in memos %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ memo.date }}</h5>
+                        <p class="card-text">{{ memo.text }}</p>
+                        {% if memo.photo %}
+                            <!-- 메모에 포함된 사진 표시 -->
+                            <img src="{{ memo.photo.url }}" class="img-fluid" alt="Memo Photo">
+                        {% endif %}
+                        <a href="{% url 'memo_update' memo.pk %}" class="btn btn-primary">수정</a>
+                        <form action="{% url 'memo_delete' memo.pk %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">삭제</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+
