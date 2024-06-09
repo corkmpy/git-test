@@ -313,3 +313,23 @@ def result_page(request):
         'average_similarity': latest_data.average_similarity
     }
     return render(request, 'plank/plank_result.html', context)
+
+
+#랭킹을 위해서
+from django.db.models import Avg
+@login_required
+def overall_result_page(request):
+    user = request.user
+    exercise_sessions = Plank_data.objects.filter(user=user).order_by('-timestamp')
+    total_sessions = exercise_sessions.count()
+    
+    # 전체 사용자 유사도 랭킹 데이터 가져오기
+    users_ranking = User.objects.annotate(average_similarity=Avg('plank_data__average_similarity')).order_by('-average_similarity')
+    
+    context = {
+        'user': user,
+        'total_sessions': total_sessions,
+        'exercise_sessions': exercise_sessions,
+        'users_ranking': users_ranking,
+    }
+    return render(request, 'plank/user_plank_result.html', context)

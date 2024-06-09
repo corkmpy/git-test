@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Squat 운동 결과</h1>
+<h1>Plank 운동 결과</h1>
 <p>아이디: {{ user.username }}</p>
 <p>총 운동 횟수: {{ total_sessions }}</p>
 <p>Total Counts: {{ total_counts }}</p>
@@ -29,12 +29,11 @@
     }
 </style>
 
-<h2>내 Squat 운동 정보</h2>
+<h2>내 Plank 운동 정보</h2>
 <table>
     <thead>
         <tr>
             <th>날짜</th>
-            <th>횟수</th>
             <th>평균 유사도</th>
         </tr>
     </thead>
@@ -42,7 +41,6 @@
         {% for session in exercise_sessions %}
         <tr>
             <td>{{ session.timestamp }}</td>
-            <td>{{ session.count_final }}</td>
             <td>{{ session.average_similarity|floatformat:2 }}%</td>
         </tr>
         {% endfor %}

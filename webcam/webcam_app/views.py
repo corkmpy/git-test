@@ -304,3 +304,24 @@ def result_page(request):
         'average_similarity': latest_data.average_similarity
     }
     return render(request, 'pushup/pushup_result.html', context)
+
+#랭킹을 위해서
+from django.db.models import Avg
+@login_required
+def overall_result_page(request):
+    user = request.user
+    exercise_sessions = Pushup_data.objects.filter(user=user).order_by('-timestamp')
+    total_sessions = exercise_sessions.count()
+    total_counts = sum(session.count_final for session in exercise_sessions)
+    
+    # 전체 사용자 유사도 랭킹 데이터 가져오기
+    users_ranking = User.objects.annotate(average_similarity=Avg('pushup_data__average_similarity')).order_by('-average_similarity')
+    
+    context = {
+        'user': user,
+        'total_sessions': total_sessions,
+        'total_counts': total_counts,
+        'exercise_sessions': exercise_sessions,
+        'users_ranking': users_ranking,
+    }
+    return render(request, 'pushup/user_pushup_result.html', context)

@@ -69,6 +69,21 @@
                         <a class="nav-link" href="{% url 'memo_create' %}">메모 작성</a>
                         {% endif %}
                     </li>
+                    <li class="nav-item">
+                        {% if user.is_authenticated %}
+                        <a class="nav-link" href="{% url 'user_squat_result' %}">Squat 랭킹</a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item">
+                        {% if user.is_authenticated %}
+                        <a class="nav-link" href="{% url 'user_pushup_result' %}">Pushup 랭킹</a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item">
+                        {% if user.is_authenticated %}
+                        <a class="nav-link" href="{% url 'user_plank_result' %}">Plank 랭킹</a>
+                        {% endif %}
+                    </li>
                 </ul>
             </div>
         </nav>

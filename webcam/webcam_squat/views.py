@@ -14,6 +14,9 @@ from django.http import JsonResponse
 from django.contrib.auth import get_user_model
 from collections import defaultdict
 from django.utils.timezone import localtime
+
+#랭킹 시스템을 위해
+from django.db.models import Avg
 # 데이터 저장을 위해
 from .models import Squat_data
 # mediapipe pose 클래스 초기화
@@ -323,16 +326,23 @@ def result_page(request):
     }
     return render(request, 'squat/squat_result.html', context)
 
+#랭킹을 위해서
 @login_required
 def overall_result_page(request):
     user = request.user
     exercise_sessions = Squat_data.objects.filter(user=user).order_by('-timestamp')
     total_sessions = exercise_sessions.count()
     total_counts = sum(session.count_final for session in exercise_sessions)
+    
+    # 전체 사용자 유사도 랭킹 데이터 가져오기
+    users_ranking = User.objects.annotate(average_similarity=Avg('squat_data__average_similarity')).order_by('-average_similarity')
+    
     context = {
         'user': user,
         'total_sessions': total_sessions,
         'total_counts': total_counts,
         'exercise_sessions': exercise_sessions,
+        'users_ranking': users_ranking,
     }
     return render(request, 'squat/user_squat_resutl.html', context)
+
