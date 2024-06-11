@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
-
+#heroku 배포를 위해 추가
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,7 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-s-q9+-y1!b!cbw5@cui666fpiaatdkm*75e(iimq%cx4-#8y+n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#heroku 배포를 위해 변경(True > False)
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.app']
 
@@ -38,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'webcam_app', # 신규 추가'
+    'webcam_app', # 여기부터 신규 추가'
     'accounts',
     'rest_framework',
     'webcam_plank',
@@ -56,6 +58,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    #heroku 배포를 위해 추가
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'webcam.urls'
@@ -88,7 +92,9 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+ #heroku 배포를 위해 추가
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
