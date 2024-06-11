@@ -317,12 +317,10 @@ def stop_stream(request):
 def result_page(request):
     user = request.user
     latest_data = Squat_data.objects.filter(user=user).order_by('-timestamp').first()
-    elapsed_time = request.GET.get('elapsed_time', 0)
     context = {
         'user': user,
         'count_final': latest_data.count_final,
         'average_similarity': latest_data.average_similarity,
-        'elapsed_time': elapsed_time
     }
     return render(request, 'squat/squat_result.html', context)
 

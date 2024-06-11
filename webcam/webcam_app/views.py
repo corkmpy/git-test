@@ -247,9 +247,8 @@ def gen(camera):
         for joint, similarity in max_similarity.items():
             similarities.append(similarity)
             average_similarity = sum(similarities) / len(similarities)  
-        print(f"Average similarity: {average_similarity:.2f}%") 
         count_final = count
-        print("Final count:", count_final)
+        
 
 #저장을 위한 전역 변수 설정
 average_similarity = 0
