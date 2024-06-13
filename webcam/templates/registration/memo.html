@@ -24,4 +24,47 @@
         <a href="{% url 'profile' %}" class="btn btn-secondary">수정 취소</a>
     </form>
 </div>
+
+<!-- Custom CSS for additional styling -->
+<style>
+    .container {
+        background-color: #f9f9f9;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .form-group label {
+        font-weight: bold;
+    }
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    .btn-primary {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+    .text-center {
+        text-align: center;
+    }
+    .mt-5 {
+        margin-top: 3rem !important;
+    }
+</style>
+
+<!-- Add Bootstrap classes directly in the form rendering -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateInput = document.querySelector('input[name="date"]');
+        const textInput = document.querySelector('textarea[name="text"]');
+        const photoInput = document.querySelector('input[name="photo"]');
+        
+        if (dateInput) dateInput.classList.add('form-control');
+        if (textInput) textInput.classList.add('form-control');
+        if (photoInput) photoInput.classList.add('form-control-file');
+    });
+</script>
 {% endblock %}
