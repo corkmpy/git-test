@@ -263,7 +263,7 @@ def gen(camera):
         if landmarks_video:
             frame, _ = classifyPose(landmarks_video, frame, display=False)
         
-        cv2.putText(frame, f'Count: {count}', (10, 180), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        cv2.putText(frame, f'Count: {count}', (10, 210), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
         
         _, jpeg = cv2.imencode('.jpg', frame)
         frame = jpeg.tobytes()
@@ -274,7 +274,8 @@ def gen(camera):
         for joint, similarity in max_similarity.items():
             similarities.append(similarity)
             average_similarity = sum(similarities) / len(similarities)  
-        
+        count_final = count
+    
 #저장을 위한 전역 변수 설정
 average_similarity = 0
 count_final = 0
