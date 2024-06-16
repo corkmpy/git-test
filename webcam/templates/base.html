@@ -92,6 +92,57 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // CSRF 토큰을 얻기 위한 함수
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // 카메라 접근 상태 확인 및 요청 함수
+        function requestCameraAccess() {
+            // 이미 접근이 허용되었는지 확인
+            if (localStorage.getItem('cameraAccess') === 'granted') {
+                return Promise.resolve('granted');
+            }
+
+            // 카메라 접근 요청
+            return navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    // 접근이 허용되면 상태 저장
+                    localStorage.setItem('cameraAccess', 'granted');
+                    stream.getTracks().forEach(track => track.stop()); // 스트림 정지
+                    return 'granted';
+                })
+                .catch(error => {
+                    // 접근이 거부되면 상태 저장
+                    localStorage.setItem('cameraAccess', 'denied');
+                    return 'denied';
+                });
+        }
+
+        // 페이지가 로드될 때 카메라 접근 요청
+        document.addEventListener('DOMContentLoaded', () => {
+            requestCameraAccess().then(status => {
+                if (status === 'denied') {
+                    alert('카메라 접근이 거부되었습니다. 설정을 확인해주세요.');
+                }
+            });
+        });
+
+        // CSRF 토큰 변수 설정
+        const csrftoken = getCookie('csrftoken');
+    </script>
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>
