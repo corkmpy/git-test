@@ -196,7 +196,7 @@ def detectPose(image, pose, display=True):
 
 pose_video = mp_pose.Pose(static_image_mode=False, min_detection_confidence=0.5, model_complexity=1)
 
-
+camera = cv2.VideoCapture(0)
  
 # 웹캠 스트림 생성 함수
 def gen(camera):
@@ -295,7 +295,7 @@ def cleanup(user):
     )
 
 def video_feed(request):
-    return StreamingHttpResponse(gen(cv2.VideoCapture(0)),
+    return StreamingHttpResponse(gen(camera),
                                  content_type='multipart/x-mixed-replace; boundary=frame')
 
 def squat_view(request):
