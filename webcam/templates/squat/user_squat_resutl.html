@@ -63,6 +63,7 @@
         <tr>
             <td>{{ forloop.counter }}</td>
             <td>{{ user.username }}</td>
+            <td>{{ session.count_final }}</td>
             <td>{{ user.average_similarity|floatformat:2 }}%</td>
         </tr>
         {% endfor %}
