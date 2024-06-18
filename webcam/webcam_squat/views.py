@@ -164,7 +164,6 @@ def classifyPose(landmarks, output_image, display=False):
                 count += 1
     prev_label = label
     
-    cv2.putText(output_image, label, (10, 30), cv2.FONT_HERSHEY_PLAIN, 2, color, 2)
     
     if display:
         plt.figure(figsize=[10,10])
@@ -212,9 +211,6 @@ def gen(camera):
         frame = cv2.resize(frame, (int(frame_width * (640 / frame_height)), 640))
         frame, landmarks_video = detectPose(frame, pose_video, display=False)
         time2 = time()
-        if (time2 - time1) > 0:
-            frames_per_second = 1.0 / (time2 - time1)
-            cv2.putText(frame, 'FPS: {}'.format(int(frames_per_second)), (10, 30), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 3)
         time1 = time2
     
         if landmarks_video and len(landmarks_video) == 33:
@@ -245,25 +241,25 @@ def gen(camera):
                 landmarks_video[mp_pose.PoseLandmark.NOSE.value]))
             # 각도 유사도를 이미지 왼쪽 상단에 추가
             cv2.putText(frame, f"Left Elbow Similarity: {left_elbow_similarity:.2f}%", (10, 60), 
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         
             cv2.putText(frame, f"Right Elbow Similarity: {right_elbow_similarity:.2f}%", (10, 90), 
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         
             cv2.putText(frame, f"Left Knee Similarity: {left_knee_similarity:.2f}%", (10, 120), 
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         
             cv2.putText(frame, f"Right Knee Similarity: {right_knee_similarity:.2f}%", (10, 150), 
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         
             cv2.putText(frame, f"Waist Similarity: {waist_similarity:.2f}%", (10, 180), 
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         
         
         if landmarks_video:
             frame, _ = classifyPose(landmarks_video, frame, display=False)
         
-        cv2.putText(frame, f'Count: {count}', (10, 210), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        cv2.putText(frame, f'Count: {count}', (10, 210), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         
         _, jpeg = cv2.imencode('.jpg', frame)
         frame = jpeg.tobytes()
