@@ -32,7 +32,7 @@
 {% block content %}
     <div class="container">
         <h1>{{ exercise|capfirst }}Plank 운동</h1>
-        <div id="prepareMessage" class="prepare-message">준비해주세요... <span id="countdown">10</span></div>
+        <div id="prepareMessage" class="prepare-message">준비해주세요... <span id="countdown">3</span></div>
         <div class="stream" id="videoContainer">
             <img id="webcam_stream" src="" width="640" height="480">
         </div>
@@ -64,7 +64,7 @@
         const csrftoken = getCookie('csrftoken');
 
         // 초기 카운트다운 설정
-        let countdown = 10;
+        let countdown = 3;
         const countdownElement = document.getElementById('countdown');
 
         // 카운트다운 인터벌 설정
