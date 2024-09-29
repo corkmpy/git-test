@@ -89,7 +89,7 @@
                     .then(data => {
                         if (data.status === 'success') {
                             alert('Stream stopped successfully');
-                            //운동마다 다른 url 필요
+                            //운동마다 다른 url 
                             window.location.href = "{% url 'plank_result' %}";  // 결과 페이지로 리디렉션
                         }
                     })

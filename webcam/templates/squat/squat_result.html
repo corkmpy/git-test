@@ -1,8 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Squat Result</h1>
-<p>아이디: {{ user.username }}</p>
-<p>Count Final: {{ count_final }}</p>
-<p>평균 유사도: {{ average_similarity }}</p>
+<style>
+    .label {
+        font-size: 24px;
+        font-weight: bold; /* 한글을 굵게 */
+    }
+    .value {
+        font-size: 24px;
+        font-weight: normal; /* 콜론 뒤의 값은 기본 굵기로 */
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h1>Squat Result</h1>
+        <p class="result-text">
+            <span class="label">아이디:</span> 
+            <span class="value">{{ user.username }}</span>
+        </p>
+        <p class="result-text">
+            <span class="label">최종 횟수:</span> 
+            <span class="value"> {{ count_final }}</span> 
+        </p>
+        <p class="result-text">
+            <span class="label">평균 유사도:</span> 
+            <span class="value">{{ average_similarity|floatformat:2 }}</span> <!-- 소수점 2자리까지만 표시 -->
+        </p>
+    </div>
+</div>   
 {% endblock %}
